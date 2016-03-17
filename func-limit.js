@@ -6,11 +6,13 @@ function limitCalls(cb, maxCalls) {
         if (canCall) {
             canCall = false;
 
+            var args = Array.prototype.slice.call(arguments);
+
             setTimeout(function() {
                 canCall = true;
             }, timeout);
 
-            cb();
+            cb.apply(this, args);
         }
     };
 }
