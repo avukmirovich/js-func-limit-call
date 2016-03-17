@@ -5,7 +5,10 @@ var emitter = require('./simple-emitter');
 var callLimits = [1, 2, 5, 10];
 var callCounts = callLimits.slice().fill(0);
 
-var source = emitter.start(10000, 2, function(totalTime) {
+var maxEventEmits = 10000;
+var delayBetweenEventEmits = 2;
+
+var source = emitter.start(maxEventEmits, delayBetweenEventEmits, function(totalTime) {
     console.log('\bTotal time (s): ' + totalTime);
 
     callCounts.forEach(function(item, index) {
@@ -34,3 +37,6 @@ source.on(emitter.EVENT_NAME, limiter(function() {
 
     spinner = !spinner;
 }, 15));
+
+console.log('Started emitting of ' + maxEventEmits + ' events with ' +
+    delayBetweenEventEmits + ' ms delay between emits...');
