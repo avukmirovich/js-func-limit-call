@@ -6,7 +6,7 @@ var callLimits = [1, 2, 5, 10];
 var callCounts = callLimits.slice().fill(0);
 
 var source = emitter.start(10000, 2, function(totalTime) {
-    console.log('Total time (s): ' + totalTime);
+    console.log('\bTotal time (s): ' + totalTime);
 
     callCounts.forEach(function(item, index) {
         console.log(index + ': Total calls = ' + item + '; Calls per second = ' + Math.round(item / totalTime));
@@ -20,3 +20,12 @@ for (var i = 0; i < callLimits.length; i++) {
         };
     })(i), callLimits[i]));
 }
+
+var spinner = true;
+source.on(emitter.EVENT_NAME, limiter(function() {
+    process.stdout.write('\b', 'utf8');
+
+    process.stdout.write(spinner ? '/': '\\', 'utf8');
+
+    spinner = !spinner;
+}, 15));
