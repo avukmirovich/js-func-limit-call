@@ -14,11 +14,16 @@ var source = emitter.start(10000, 2, function(totalTime) {
 });
 
 for (var i = 0; i < callLimits.length; i++) {
+    var limit = callLimits[i];
+
     source.on(emitter.EVENT_NAME, limiter((function (index) {
         return function() {
             callCounts[index]++;
         };
-    })(i), callLimits[i]));
+    })(i), limit));
+
+    console.log('Added handler #' + (i + 1) +
+            '; rate = ' + limit + ' call' + (limit > 1 ? 's' : '') +'/sec');
 }
 
 var spinner = true;
